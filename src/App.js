@@ -9,7 +9,9 @@ import ChangePassword from './pages/ChangePassword';
 import ResendMail from './pages/ResendMail'
 import ResetComplete from './pages/ResetComplete';
 import VerifyEmail from './pages/VerifyEmail';
-
+import UpdateProfile from './pages/UpdateProfile';
+import Profile from './pages/Profile'
+import Cart from './pages/Cart'
 function App() {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -22,7 +24,10 @@ function App() {
           <Route path="/resendMail" element={<ResendMail/>}/>
           <Route path="/resetComplete" element={<ResetComplete/>}/>
           <Route path="/update-Password" element={<ChangePassword/>}/>
+          <Route path="/updateProfile" element={<UpdateProfile/>}/>
           <Route path="/verifyEmail" element={<VerifyEmail/>}/>
+          <Route path="/dashboard/my-profile" element={<Profile/>}/>
+          <Route path="/dashboard/cart" element={<Cart/>}/>
         </Routes>
     </div>
   );

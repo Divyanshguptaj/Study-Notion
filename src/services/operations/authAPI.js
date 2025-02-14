@@ -1,6 +1,5 @@
 import { toast } from "react-hot-toast"
 import { setLoading, setToken } from "../../slices/authSlice"
-// import { resetCart } from "../../slices/cartSlice" 
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
 import { endpoints } from "../apis"
@@ -79,13 +78,10 @@ export function login(email, password, navigate) {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      console.log(email, password);
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
       })
-
-      console.log("LOGIN API RESPONSE............", response)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
@@ -110,17 +106,18 @@ export function login(email, password, navigate) {
   }
 }
 
-// export function logout(navigate) {
-//   return (dispatch) => {
-//     dispatch(setToken(null))
-//     dispatch(setUser(null))
-//     dispatch(resetCart())
-//     localStorage.removeItem("token")
-//     localStorage.removeItem("user")
-//     toast.success("Logged Out")
-//     navigate("/")
-//   }
-// }
+export function logout(navigate) {
+  return (dispatch) => {
+    dispatch(setToken(null))
+    dispatch(setUser(null))
+    localStorage.clear(); // Clears all stored items
+    // dispatch(resetCart())
+    // localStorage.removeItem("token")
+    // localStorage.removeItem("user")
+    toast.success("Logged Out")
+    navigate("/")
+  }
+}
 
 export function getPasswordResetToken(email , setEmailSent,navigate) {
   return async(dispatch) => {

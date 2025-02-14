@@ -72,12 +72,13 @@ exports.showAllCourses = async (req,res)=>{
             studentsEnrolled: true,
         }).populate("instructor").exec();
         
+        console.log(allCourses)
+
         return res.status(200).json({
             success: true,
             message: "All courses shown successfully...",
             data: allCourses,
         })
-
     }catch(error){
         return res.status(400).json({
             success: false,

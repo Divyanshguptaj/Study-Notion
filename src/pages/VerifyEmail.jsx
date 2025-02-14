@@ -109,10 +109,10 @@ const VerifyEmail = () => {
       <div className="flex items-center justify-between w-full max-w-xs mt-6 text-sm">
         <div className="text-left mt-2">
           <a
-            href="/login"
+            href="/signup"
             className="text-sm text-slate-200 flex items-center gap-2 hover:text-gray-500"
           >
-            <FaArrowLeftLong /> Back to login
+            <FaArrowLeftLong /> Back to Signup
           </a>
         </div>
 

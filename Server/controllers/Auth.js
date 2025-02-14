@@ -10,7 +10,7 @@ require('dotenv').config();
 exports.sendOTP = async (req, res)=>{
     try{
         const {email} = req.body;
-        console.log(email);
+        // console.log(email);
         const checkUserPresent = await User.findOne({email})
         if(checkUserPresent){
             return res.status(401).json({
@@ -33,10 +33,9 @@ exports.sendOTP = async (req, res)=>{
             result = await OTP.findOne({otp: otp})
         }
 
-        console.log("OTP generated succesfully",otp);
+        // console.log("OTP generated succesfully",otp);
         const otpPayload = {email, otp};
-        const otpBody = await OTP.create(otpPayload);
-        console.log(otpBody);
+        await OTP.create(otpPayload);
         
         return res.status(200).json({
             success: true,
@@ -55,7 +54,6 @@ exports.sendOTP = async (req, res)=>{
 exports.signUp = async (req,res) =>{
     try{
         const {firstName, lastName, email, password, confirmPassword, accountType, contactNumber, otp} = req.body; 
-        // console.log(firstName, lastName, email, password, confirmPassword, accountType, contactNumber, otp);
 
         //validation
         if(!firstName || !lastName || !password || !confirmPassword || !otp || !contactNumber){
@@ -80,10 +78,8 @@ exports.signUp = async (req,res) =>{
             })
         }
 
-        //check recent otp
-        console.log("fetching otp")
         const recentOTP = await OTP.find({email}).sort({createdAt: -1}).limit(1);
-        console.log(recentOTP);
+        
         if(recentOTP.length===0){
             return res.status(400).json({
                 success: false,
@@ -134,7 +130,6 @@ exports.signUp = async (req,res) =>{
 exports.login = async (req,res)=>{
     try{
         const {email, password} = req.body;
-        console.log(email, password);
         if(!email || !password){
             return res.status(400).json({
                 success: false,
@@ -143,7 +138,6 @@ exports.login = async (req,res)=>{
         }
 
         const user = await User.findOne({email: email});
-        console.log(user._id);
         if(!user){ 
             return res.status(400).json({
                 success: false,
@@ -167,7 +161,7 @@ exports.login = async (req,res)=>{
                 expires: new Date(Date.now() + 3*24*60*60*1000),
                 httpOnly: true,
             }
-            res.cookie("Token", token, options).status(200).json({
+            return res.cookie("Token", token, options).status(200).json({
                 success: true,
                 token, 
                 user, 

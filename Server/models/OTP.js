@@ -26,6 +26,7 @@ async function sendVerificationEmail(email, otp){
             <p>This OTP is valid for 5 minutes.</p>
             <p>Thank you!</p>
         `;
+        // console.log(email)
         const mailResponse = await mailSender(email, "Verification of Email", emailBody);
         console.log(mailResponse)
         console.log("Email sent successfully...");

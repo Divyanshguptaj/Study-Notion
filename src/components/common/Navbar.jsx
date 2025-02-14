@@ -1,4 +1,4 @@
-// import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SiStudyverse } from "react-icons/si";
 import {Link} from 'react-router-dom';
 import { NavbarLinks } from '../../data/navbar-links';
@@ -25,6 +25,7 @@ const Navbar = () => {
   const {user} = useSelector((state)=>state.profile)
   const {totalItems} = useSelector((state)=>state.cart)
   const location = useLocation();
+  
   // const [subLinks, setSubLinks] = useState([]);
   // const fetchSubLinks = async()=>{
   //   try {
@@ -37,8 +38,9 @@ const Navbar = () => {
   // }
 
   // useEffect(()=>{
-  //   fetchSubLinks();
+    // console.log(token, user, totalItems)
   // },[])
+  
   const matchRoute = (route) => {
     return route === location.pathname;
   };
@@ -95,8 +97,8 @@ const Navbar = () => {
       <div className='flex gap-x-4 items-center'>
         {
           // If user exists then user has some value it will show cart 
-          user && user?.accuontType === "Student" && (
-            <Link to="/dashboard/cart" className='relative'>
+          user && user?.accountType === "Student" && (
+            <Link to="/dashboard/cart" className='relative text-white text-2xl'>
               <AiOutlineShoppingCart/>
               {
                 totalItems > 0 && (
@@ -108,6 +110,14 @@ const Navbar = () => {
             </Link>
           )
         }
+
+        {token !== null && user?.image && (
+          <Link to="/dashboard/my-profile" className="relative text-white text-2xl">
+            <img src={user?.image} alt="Profile" className="bg-white w-6 h-6 rounded-full" />
+          </Link>
+        )}
+
+
 
         {
         // if not logged in then it will go for login and signup buttons  
@@ -121,9 +131,6 @@ const Navbar = () => {
               </Link>
             </div>
           )
-        }
-        {
-          token!==null && <ProfileDropDown/>
         }
       </div>
 

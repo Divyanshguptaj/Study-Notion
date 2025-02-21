@@ -22,7 +22,7 @@ export const sidebarLinks = [
     {
         id: 4,
         name: "Add Courses",
-        path: '/dashboard/my-courses',
+        path: '/dashboard/add-courses',
         icon: 'VscAdd',
     },
     {
@@ -30,5 +30,11 @@ export const sidebarLinks = [
         name: "Enrolled Courses",
         path: '/dashboard/enrolled-courses',
         icon: 'VscExtensions',
+    },
+    {
+        id: 6,
+        name: "Cart",
+        path: '/dashboard/cart',
+        icon: 'AiOutlineShoppingCart',
     },
 ]

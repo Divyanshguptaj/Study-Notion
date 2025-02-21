@@ -12,7 +12,10 @@ import VerifyEmail from './pages/VerifyEmail';
 import UpdateProfile from './pages/UpdateProfile';
 import DashBoard from './pages/Dashboard';
 import Profile from '../src/components/core/Dashboard/MyProfile';
-import Cart from './pages/Cart';
+import Cart from './components/core/Dashboard/Cart';
+import Settings from './components/core/Dashboard/Settings';
+import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
+// import Cart from './pages/Cart';
 import About from './pages/About';
 // import { Outlet } from 'react-router-dom';
 
@@ -35,6 +38,9 @@ function App() {
 
         <Route path="/dashboard" element={<DashBoard />}>
           <Route path="my-profile" element={<Profile />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="enrolled-courses" element={<EnrolledCourses />} />
           <Route path="cart" element={<Cart />} />
         </Route>
 

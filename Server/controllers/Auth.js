@@ -182,12 +182,54 @@ exports.login = async (req,res)=>{
 }
 
 //ye bacha hua hai 
-exports.changePassword = async (req,res)=>{
-    const {oldPassword, newPassword, confirmNewPassword} = req.body;
-    if(!oldPassword || !newPassword || !confirmNewPassword){
-        return res.status(400).json({
-            success:false,
-            message: "Password field can't be empty",
-        })
+exports.changePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword, mail } = req.body;
+
+        if (!oldPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Password fields cannot be empty",
+            });
+        }
+        console.log(mail)
+        // Find user by email
+        const user = await User.findOne({ email: mail });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false, 
+                message: "User not found",
+            });
+        }
+
+        // Compare old password with stored password
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({
+                success: false,
+                message: "Old password is incorrect",
+            });
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update user password
+        user.password = hashedPassword;
+        await user.save(); // ✅ Save changes
+
+        return res.status(200).json({
+            success: true,
+            message: "Password Updated Successfully",
+        });
+
+    } catch (error) {
+        console.error("Change Password Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
     }
-}
+};

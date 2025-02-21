@@ -112,8 +112,8 @@ export function logout(navigate) {
     dispatch(setUser(null))
     localStorage.clear(); // Clears all stored items
     // dispatch(resetCart())
-    // localStorage.removeItem("token")
-    // localStorage.removeItem("user")
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
     toast.success("Logged Out")
     navigate("/")
   }

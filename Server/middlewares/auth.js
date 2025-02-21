@@ -1,20 +1,24 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const User = require('../models/User');
+// const User = require('../models/User');
 
 exports.auth = async (req, res, next)=>{
     try{
+        // console.log("object1")
         const token = req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer", "");
+        // console.log(token);
         if(!token){
             return res.status(400).json({
                 success: false,
                 message: "Token missing",
             })
-        }
+        } 
+        // console.log("object")
         try{
             const decode = await jwt.verify(token, process.env.JWT_SECRET);
             console.log(decode);
             req.user = decode;
+            console.log("object")
         }catch(error){
             return res.status(400).json({
                 success: false,

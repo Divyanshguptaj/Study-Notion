@@ -2,7 +2,6 @@ import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-
 import { sidebarLinks } from "../../../data/dashboard-links"
 import { logout } from "../../../services/operations/authAPI"
 import ConfirmationModal from "../../common/ConfirmationModal"
@@ -31,7 +30,9 @@ export default function Sidebar() {
       <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
         <div className="flex flex-col">
           {sidebarLinks.map((link) => {
-            if (link.type && user?.accountType !== link.type) return null
+            // if (link.type && user?.accountType !== link.type) return null
+            if (user?.accountType === "Student" && (link.id===3 || link.id===4)) return null
+            else if (user?.accountType === "Instructor" && (link.id===6 || link.id===5)) return null
             return (
               <SidebarLink key={link.id} link={link} iconName={link.icon} />
             )

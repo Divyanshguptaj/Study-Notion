@@ -15,8 +15,11 @@ import Profile from '../src/components/core/Dashboard/MyProfile';
 import Cart from './components/core/Dashboard/Cart';
 import Settings from './components/core/Dashboard/Settings';
 import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
-// import Cart from './pages/Cart';
+import EditCourse from './components/core/Dashboard/EditCourse';
+import AddCourse from './components/core/Dashboard/AddCourse'
+import InstructorCourses from './components/core/Dashboard/MyCourses'
 import About from './pages/About';
+import Catalog from './pages/Catalog';
 // import { Outlet } from 'react-router-dom';
 
 function App() {
@@ -34,14 +37,17 @@ function App() {
         <Route path="/updateProfile" element={<UpdateProfile />} />
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/catalog/:catalogName" element={<Catalog />} />
 
 
         <Route path="/dashboard" element={<DashBoard />}>
           <Route path="my-profile" element={<Profile />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="add-courses" element={<AddCourse />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="instructor-courses" element={<InstructorCourses />} />
           <Route path="enrolled-courses" element={<EnrolledCourses />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path="/dashboard/edit-course/:courseId" element={<EditCourse />} />
         </Route>
 
       </Routes>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import { MdClose } from "react-icons/md"
 
 export default function RequirementsField({
   name,
@@ -41,7 +42,7 @@ export default function RequirementsField({
 
   return (
     <div className="flex flex-col space-y-2">
-      <label className="text-sm text-richblack-5" htmlFor={name}>
+      <label className="text-sm text-richblack-300" htmlFor={name}>
         {label} <sup className="text-pink-200">*</sup>
       </label>
       <div className="flex flex-col items-start space-y-2">
@@ -50,12 +51,12 @@ export default function RequirementsField({
           id={name}
           value={requirement}
           onChange={(e) => setRequirement(e.target.value)}
-          className="form-style w-full"
+          className="form-style w-full bg-slate-900 rounded-md text-white border border-1 border-gray-300 p-2"
         />
         <button
           type="button"
           onClick={handleAddRequirement}
-          className="font-semibold text-yellow-50"
+          className="font-semibold text-yellow-400 bg-richblack-900 px-2 py-1 border-1 border-slate-500 border rounded-lg"
         >
           Add
         </button>
@@ -63,14 +64,14 @@ export default function RequirementsField({
       {requirementsList.length > 0 && (
         <ul className="mt-2 list-inside list-disc">
           {requirementsList.map((requirement, index) => (
-            <li key={index} className="flex items-center text-richblack-5">
+            <li key={index} className="flex items-center text-richblack-300">
               <span>{requirement}</span>
               <button
                 type="button"
                 className="ml-2 text-xs text-pure-greys-300 "
                 onClick={() => handleRemoveRequirement(index)}
               >
-                clear
+                <MdClose className="rounded-full border border-1 border-white text-sm"/>
               </button>
             </li>
           ))}

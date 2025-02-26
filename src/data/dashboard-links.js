@@ -16,7 +16,7 @@ export const sidebarLinks = [
     {
         id: 3,
         name: "My Courses",
-        path: '/dashboard/my-courses',
+        path: '/dashboard/instructor-courses',
         icon: 'VscVm',
     },
     {

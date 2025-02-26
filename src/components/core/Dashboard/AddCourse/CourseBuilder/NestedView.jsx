@@ -5,11 +5,7 @@ import { MdEdit } from "react-icons/md"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { RxDropdownMenu } from "react-icons/rx"
 import { useDispatch, useSelector } from "react-redux"
-
-import {
-  deleteSection,
-  deleteSubSection,
-} from "../../../../../services/operations/courseDetailsAPI"
+import { deleteSection, deleteSubSection,} from "../../../../../services/operations/courseDetailsAPI"
 import { setCourse } from "../../../../../slices/courseSlice"
 import ConfirmationModal from "../../../../common/ConfirmationModal"
 import SubSectionModal from "./SubSectionModal"
@@ -25,12 +21,12 @@ export default function NestedView({ handleChangeEditSectionName }) {
   // to keep track of confirmation modal
   const [confirmationModal, setConfirmationModal] = useState(null)
 
-  const handleDeleleSection = async (sectionId) => {
+  const handleDeleteSection = async (sectionId) => {
     const result = await deleteSection({
       sectionId,
       courseId: course._id,
-      token,
     })
+    // console.log(result)
     if (result) {
       dispatch(setCourse(result))
     }
@@ -38,14 +34,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
   }
 
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    const result = await deleteSubSection({ subSectionId, sectionId, token })
+    const courseId = course._id;
+    const result = await deleteSubSection({ subSectionId, sectionId ,courseId})
     if (result) {
-      // update the structure of course
-      const updatedCourseContent = course.courseContent.map((section) =>
-        section._id === sectionId ? result : section
-      )
-      const updatedCourse = { ...course, courseContent: updatedCourseContent }
-      dispatch(setCourse(updatedCourse))
+      dispatch(setCourse(result))
     }
     setConfirmationModal(null)
   }
@@ -62,8 +54,8 @@ export default function NestedView({ handleChangeEditSectionName }) {
             {/* Section Dropdown Content */}
             <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
               <div className="flex items-center gap-x-3">
-                <RxDropdownMenu className="text-2xl text-richblack-50" />
-                <p className="font-semibold text-richblack-50">
+                <RxDropdownMenu className="text-2xl text-richblack-300" />
+                <p className="font-semibold text-richblack-300">
                   {section.sectionName}
                 </p>
               </div>
@@ -85,7 +77,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                       text2: "All the lectures in this section will be deleted",
                       btn1Text: "Delete",
                       btn2Text: "Cancel",
-                      btn1Handler: () => handleDeleleSection(section._id),
+                      btn1Handler: () => handleDeleteSection(section._id),
                       btn2Handler: () => setConfirmationModal(null),
                     })
                   }
@@ -105,8 +97,8 @@ export default function NestedView({ handleChangeEditSectionName }) {
                   className="flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2"
                 >
                   <div className="flex items-center gap-x-3 py-2 ">
-                    <RxDropdownMenu className="text-2xl text-richblack-50" />
-                    <p className="font-semibold text-richblack-50">
+                    <RxDropdownMenu className="text-2xl text-richblack-300" />
+                    <p className="font-semibold text-richblack-300">
                       {data.title}
                     </p>
                   </div>
@@ -119,7 +111,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                         setEditSubSection({ ...data, sectionId: section._id })
                       }
                     >
-                      <MdEdit className="text-xl text-richblack-300" />
+                      <MdEdit className="text-xl text-white" />
                     </button>
                     <button
                       onClick={() =>
@@ -134,7 +126,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                         })
                       }
                     >
-                      <RiDeleteBin6Line className="text-xl text-richblack-300" />
+                      <RiDeleteBin6Line className="text-xl text-white" />
                     </button>
                   </div>
                 </div>

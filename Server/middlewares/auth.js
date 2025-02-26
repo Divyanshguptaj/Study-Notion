@@ -4,21 +4,16 @@ require('dotenv').config();
 
 exports.auth = async (req, res, next)=>{
     try{
-        // console.log("object1")
         const token = req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer", "");
-        // console.log(token);
         if(!token){
             return res.status(400).json({
                 success: false,
                 message: "Token missing",
             })
         } 
-        // console.log("object")
         try{
             const decode = await jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decode);
             req.user = decode;
-            console.log("object")
         }catch(error){
             return res.status(400).json({
                 success: false,
@@ -54,6 +49,7 @@ exports.isStudent = async (req, res, next)=>{
 //isInstructor
 exports.isInstructor = async (req, res, next)=>{
     try{
+        // console.log(req.user)
         if(req.user.accountType !== "Instructor"){
             return res.status(400).json({
                 success: false,
@@ -61,6 +57,7 @@ exports.isInstructor = async (req, res, next)=>{
             })
         }
         next();
+        // console.log("instructor")
     }catch(error){
         return res.status(400).json({
             success: false,

@@ -3,7 +3,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
 import { setCourse, setEditCourse } from "../../../../slices/courseSlice"
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa"
 import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
@@ -22,14 +22,15 @@ export default function CoursesTable({ courses, setCourses }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
   const [loading, setLoading] = useState(false)
   const [confirmationModal, setConfirmationModal] = useState(null)
   const TRUNCATE_LENGTH = 30
 
   const handleCourseDelete = async (courseId) => {
     setLoading(true)
-    await deleteCourse({ courseId: courseId }, token)
-    const result = await fetchInstructorCourses(token)
+    await deleteCourse({ courseId: courseId })
+    const result = await fetchInstructorCourses(user._id)
     if (result) {
       setCourses(result)
     }
@@ -41,27 +42,29 @@ export default function CoursesTable({ courses, setCourses }) {
 
   return (
     <>
-      <Table className="rounded-xl border border-richblack-800 ">
-        <Thead>
-          <Tr className="flex gap-x-10 rounded-t-md border-b border-b-richblack-800 px-6 py-2">
-            <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
+      <Table className="w-full border border-slate-700 rounded-lg overflow-hidden shadow-md">
+        <Thead className="bg-gray-800 text-white">
+          <Tr className="flex gap-x-6 border-b border-slate-700 px-6 py-3">
+            <Th className="flex-1 text-left text-sm font-semibold uppercase tracking-wider">
               Courses
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-semibold uppercase tracking-wider">
               Duration
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-semibold uppercase tracking-wider">
               Price
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-semibold uppercase tracking-wider">
               Actions
             </Th>
           </Tr>
         </Thead>
+
+
         <Tbody>
           {courses?.length === 0 ? (
             <Tr>
-              <Td className="py-10 text-center text-2xl font-medium text-richblack-100">
+              <Td className="py-10 text-center text-2xl font-medium text-richblack-300">
                 No courses found
                 {/* TODO: Need to change this state */}
               </Td>
@@ -79,7 +82,7 @@ export default function CoursesTable({ courses, setCourses }) {
                     className="h-[148px] w-[220px] rounded-lg object-cover"
                   />
                   <div className="flex flex-col justify-between">
-                    <p className="text-lg font-semibold text-richblack-5">
+                    <p className="text-lg font-semibold text-richblack-300">
                       {course.courseName}
                     </p>
                     <p className="text-xs text-richblack-300">
@@ -91,17 +94,17 @@ export default function CoursesTable({ courses, setCourses }) {
                             .join(" ") + "..."
                         : course.courseDescription}
                     </p>
-                    <p className="text-[12px] text-white">
+                    {/* <p className="text-[12px] text-white">
                       Created: {formatDate(course.createdAt)}
-                    </p>
+                    </p> */}
                     {course.status === COURSE_STATUS.DRAFT ? (
-                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
+                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-800 px-2 py-[2px] text-[12px] font-medium text-pink-400">
                         <HiClock size={14} />
                         Drafted
                       </p>
                     ) : (
-                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
-                        <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-100 text-richblack-700">
+                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-800 px-2 py-[2px] text-[12px] font-medium text-yellow-400">
+                        <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-400 text-slate-800">
                           <FaCheck size={8} />
                         </div>
                         Published
@@ -109,13 +112,13 @@ export default function CoursesTable({ courses, setCourses }) {
                     )}
                   </div>
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="text-sm font-medium text-richblack-300">
                   2hr 30min
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="text-sm font-medium text-richblack-300">
                   ₹{course.price}
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100 ">
+                <Td className="text-sm font-medium text-richblack-300 ">
                   <button
                     disabled={loading}
                     onClick={() => {

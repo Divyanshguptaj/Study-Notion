@@ -19,10 +19,10 @@ export default function EditCourse() {
   useEffect(() => {
     ;(async () => {
       setLoading(true)
-      const result = await getFullDetailsOfCourse(courseId, token)
-      if (result?.courseDetails) {
+      const result = await getFullDetailsOfCourse(courseId)
+      if (result) {
         dispatch(setEditCourse(true))
-        dispatch(setCourse(result?.courseDetails))
+        dispatch(setCourse(result))
       }
       setLoading(false)
     })()
@@ -39,14 +39,14 @@ export default function EditCourse() {
 
   return (
     <div>
-      <h1 className="mb-14 text-3xl font-medium text-richblack-5">
+      <h1 className="mb-14 text-3xl font-medium text-richblack-300">
         Edit Course
       </h1>
       <div className="mx-auto max-w-[600px]">
         {course ? (
           <RenderSteps />
         ) : (
-          <p className="mt-14 text-center text-3xl font-semibold text-richblack-100">
+          <p className="mt-14 text-center text-3xl font-semibold text-richblack-300">
             Course not found
           </p>
         )}

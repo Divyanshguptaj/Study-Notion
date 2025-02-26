@@ -9,27 +9,28 @@ import CoursesTable from "./InstructorCourses/CoursesTable"
 
 export default function MyCourses() {
   const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
   const navigate = useNavigate()
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
+    // console.log(user._id);
     const fetchCourses = async () => {
-      const result = await fetchInstructorCourses(token)
+      const result = await fetchInstructorCourses(user._id)
       if (result) {
         setCourses(result)
       }
     }
-    fetchCourses()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchCourses();
   }, [])
 
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">My Courses</h1>
+        <h1 className="text-3xl font-medium text-richblack-300">My Courses</h1>
         <IconBtn
           text="Add Course"
-          onclick={() => navigate("/dashboard/add-course")}
+          onclick={() => navigate("/dashboard/add-courses")}
         >
           <VscAdd />
         </IconBtn>

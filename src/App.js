@@ -25,6 +25,7 @@ import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 // import { ACCOUNT_TYPE } from "./utils/constants";
 import CourseDetails from './pages/CourseDetails';
+import ContactUsPage from './pages/Contact';
 import { useSelector } from 'react-redux';
 // import { Outlet } from 'react-router-dom';
 
@@ -44,6 +45,7 @@ function App() {
         <Route path="/updateProfile" element={<UpdateProfile />} />
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactUsPage />} />
         <Route path="/catalog/:catalogName" element={<Catalog />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
 

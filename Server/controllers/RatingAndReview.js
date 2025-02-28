@@ -3,8 +3,8 @@ const Course = require('../models/Course')
 
 exports.createRating = async (req, res)=>{
     try {
-        const {rating, review, courseId} = req.body;
-        const userId = req.user.id;
+        const {rating, review, courseId, userId} = req.body;
+        // const userId = req.user.id;
 
         if(!rating || !review){
             return res.status(400).json({
@@ -13,8 +13,8 @@ exports.createRating = async (req, res)=>{
             })
         }
 
-        const courseDetails = await Course.findOne({id:courseId,studentsEnrolled:{$elemMatch: {$eq: userId}}});
-
+        const courseDetails = await Course.findOne({ _id:courseId, studentsEnrolled:{$elemMatch: {$eq: userId}}});
+        // console.log(courseDetails)
         if(!courseDetails){
             return res.status(400).json({
                 success: false,
@@ -22,7 +22,8 @@ exports.createRating = async (req, res)=>{
             })
         }
 
-        const alreadyReviewed = await RatingAndReview.findOne({user: userId,course: coureseId,})
+        const alreadyReviewed = await RatingAndReview.findOne({user: userId,course: courseId});  
+        // console.log("alredyReviewed", alreadyReviewed)
         if(alreadyReviewed){
             return res.status(403).json({
                 success: false,

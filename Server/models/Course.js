@@ -45,7 +45,7 @@ const courseSchema = new mongoose.Schema({
     instructions: {
         type: [String],
     },
-    status: {
+    status: { 
         type: String,
         enum: ["Draft", "Published"],
     },
@@ -54,6 +54,10 @@ const courseSchema = new mongoose.Schema({
         ref: "User",
         // required: true,
     }],
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+    }
 })
 
 module.exports = mongoose.model('Course', courseSchema);

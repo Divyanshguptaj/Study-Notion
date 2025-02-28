@@ -3,7 +3,7 @@ import Footer from '../components/common/Footer'
 import { useParams } from 'react-router-dom'
 import { apiConnector } from '../services/apiconnector';
 import { categories } from '../services/apis';
-import { getCatalogaPageData } from '../services/operations/pageAndComponentData';
+import { getCatalogPageData } from '../services/operations/pageAndComponentData';
 import Course_Card from '../components/core//Catalog/Course_Card';
 import CourseSlider from '../components/core/Catalog/CourseSlider';
 import { useSelector } from "react-redux"
@@ -21,8 +21,8 @@ const Catalog = () => {
     useEffect(()=> {
         const getCategories = async() => {
             const res = await apiConnector("GET", categories.CATEGORIES_API);
-            const category_id = 
-            res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0]._id;
+            const category_id = res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0]._id;
+            // console.log(category_id)
             setCategoryId(category_id);
         }
         getCategories();
@@ -31,7 +31,7 @@ const Catalog = () => {
     useEffect(() => {
         const getCategoryDetails = async() => {
             try{
-                const res = await getCatalogaPageData(categoryId);
+                const res = await getCatalogPageData(categoryId);
                 console.log("PRinting res: ", res);
                 setCatalogPageData(res);
             }
@@ -61,14 +61,14 @@ const Catalog = () => {
         <>
           {/* Hero Section */}
           <div className=" box-content bg-richblack-800 px-4">
-            <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
+            <div className="px-10 mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
               <p className="text-sm text-richblack-300">
                 {`Home / Catalog / `}
-                <span className="text-yellow-25">
+                <span className="text-yellow-400">
                   {catalogPageData?.data?.selectedCategory?.name}
                 </span>
               </p>
-              <p className="text-3xl text-richblack-5">
+              <p className="text-3xl text-richblack-300 font-medium">
                 {catalogPageData?.data?.selectedCategory?.name}
               </p>
               <p className="max-w-[870px] text-richblack-200">
@@ -78,41 +78,42 @@ const Catalog = () => {
           </div>
     
           {/* Section 1 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Courses to get you started</div>
-            <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+          <div className=" mx-auto box-content w-[90%] max-w-maxContentTab px-10 py-12 lg:max-w-maxContent">
+            <div className="section_heading text-4xl font-medium text-white px-10">Courses to get you started</div>
+            <div className="my-4 flex border-b border-b-richblack-600 text-sm px-10">
               <p
-                className={`px-4 py-2 ${
+                className={`text-white py-2 ${
                   active === 1
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
-                } cursor-pointer`}
+                    ? "border-b-4 border-b border-b-yellow-600 text-yellow-400"
+                    : "text-richblack-300"
+                } cursor-pointer w-[150px] flex justify-center items-center`}
                 onClick={() => setActive(1)}
               >
-                Most Populer
+                Most Popular
               </p>
               <p
-                className={`px-4 py-2 ${
+                className={`px-4 py-2 w-[150px] flex justify-center items-center text-white ${
                   active === 2
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
+                    ? "border-b border-b-yellow-600 text-yellow-400 border-b-4"
+                    : "text-richblack-300"
                 } cursor-pointer`}
                 onClick={() => setActive(2)}
               >
                 New
               </p>
             </div>
-            <div>
+            <div className='pt-10'>
               <CourseSlider
                 Courses={catalogPageData?.data?.selectedCategory?.courses}
               />
             </div>
           </div>
           {/* Section 2 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">
+          <div className=" mx-auto box-content w-[90%] max-w-maxContentTab px-10 py-12 lg:max-w-maxContent">
+            <div className="section_heading text-white text-4xl font-medium">
               Top courses in {catalogPageData?.data?.differentCategory?.name}
             </div>
+            <div className="my-4 flex border-b border-b-richblack-600 text-sm py-5"></div>
             <div className="py-8">
               <CourseSlider
                 Courses={catalogPageData?.data?.differentCategory?.courses}
@@ -121,16 +122,20 @@ const Catalog = () => {
           </div>
     
           {/* Section 3 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Frequently Bought</div>
+          <div className=" box-content w-[90%] max-w-maxContentTab py-12 lg:max-w-maxContent mx-10">
+            <div className="section_heading text-white text-4xl font-medium">Frequently Bought</div>
+            <div className="my-4 flex border-b border-b-richblack-600 text-sm py-5"></div>
             <div className="py-8">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mx-auto">
                 {catalogPageData?.data?.mostSellingCourses
                   ?.slice(0, 4)
                   .map((course, i) => (
-                    <Course_Card course={course} key={i} Height={"h-[400px]"} />
+                    <div key={i} >
+                      <Course_Card course={course} Height={"h-[250px]"} />
+                    </div>
                   ))}
               </div>
+
             </div>
           </div>
     

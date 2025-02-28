@@ -138,3 +138,80 @@ exports.getAllUsers = async (req, res)=>{
         })
     }
 }
+
+exports.getEnrolledCourses = async (req, res) => {
+    try {
+      // const userId = req.user.id; // Assuming authentication middleware adds `req.user`
+      const { userId }= req.query
+    //   console.log(userId);
+      // Fetch user and populate enrolled courses
+      const user = await User.findById(userId)
+      .populate({
+        path: "courses", // Populate the courses array
+        populate: {
+          path: "courseContent", // Inside courses, populate courseContent (sections)
+          populate: {
+            path: "subSection", // Inside courseContent, populate subsections
+          },
+        },
+      });
+      // console.log(user)
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+  
+      return res.status(200).json({
+        success: true,
+        data: user.courses,
+      });
+  
+    } catch (error) {
+      console.error("Error fetching enrolled courses:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Can't fetch the enrolled courses",
+        error: error.message,
+      });
+    }
+};
+
+exports.instructorDetails = async (req, res) => {
+    try {
+        const { userId } = req.query; // Get instructor ID from request params
+        const instructorId = userId
+        console.log(userId)
+        // Find instructor, populate `additionalDetails` & `courses`
+        const instructor = await User.findOne({
+            _id: instructorId,
+            accountType: "Instructor",
+        })
+        .populate("additionalDetails") // Fetch profile details
+        .populate({
+            path: "courses",
+            select: "courseName courseDescription price studentsEnrolled",
+        });
+
+        // If instructor not found
+        if (!instructor) {
+            return res.status(404).json({
+                success: false,
+                message: "Instructor not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            instructor,
+        });
+
+    } catch (error) {
+        console.error("Error fetching instructor details:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
+};

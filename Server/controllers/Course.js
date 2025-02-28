@@ -3,7 +3,9 @@ const Category = require('../models/Category');
 const User = require("../models/User")
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
-const {uploadImagetoCloudinary} = require('../utils/imageUploader') 
+const {uploadImagetoCloudinary} = require('../utils/imageUploader');
+const CourseProgress = require("../models/CourseProgress");
+
 require('dotenv').config();
 
 exports.editCourse = async (req, res) => {
@@ -214,7 +216,7 @@ exports.showAllCourses = async (req,res)=>{
 exports.getCourseDetails = async (req,res)=>{
     try {
         const {courseId} = req.body;
-        // console.log("courseID", courseId)
+        // console.log("courseID", courseId) 
         if(!courseId){
             return res.status(400).json({
                 success: false,
@@ -222,6 +224,7 @@ exports.getCourseDetails = async (req,res)=>{
             })
         }
         const courseDetails = await Course.findById(courseId)
+        .populate({path: "studentsEnrolled", populate: {path: 'courseProgress'}})
         .populate({path: 'instructor',populate:{path:'additionalDetails'},})
         .populate('ratingAndReviews')
         .populate('category')
@@ -234,10 +237,12 @@ exports.getCourseDetails = async (req,res)=>{
                 message: "Can't find the course...",
             })
         }
+        const result = {...courseDetails, success: true};
+        // console.log(result)
         return res.status(200).json({
-            success: true,
+            success: true,  
             message: "Found course details succesfully...",
-            data: courseDetails
+            data: result
         })
 
     } catch (error) {
@@ -260,7 +265,8 @@ exports.getInstructorCourses = async (req, res) => {
                 path: "courseContent",
                 populate: { path: "subSection" }, // Populate subsections inside sections
             });
- 
+            
+        // console.log(courses);
         if (!courses || courses.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -330,4 +336,53 @@ exports.deleteCourse = async (req, res) => {
             message: "Error deleting course. Please try again.",
         });
     }
+};
+
+exports.updateCourseProgress = async (req, res) => {
+  try {
+    const { userId, courseId, subSectionId } = req.body;
+
+    if (!userId || !courseId || !subSectionId) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Find the user's progress for this course
+    let progress = await CourseProgress.findOne({ courseID: courseId });
+
+    // If progress doesn't exist, create a new entry
+    if (!progress) {
+      progress = new CourseProgress({
+        courseID: courseId,
+        completedVideos: [],
+      });
+    }
+
+    // Check if the subSection is already marked as completed
+    if (!progress.completedVideos.includes(subSectionId)) {
+      progress.completedVideos.push(subSectionId);
+      await progress.save();
+    }
+
+    // Ensure the user's course progress list contains this progress
+    if (!user.courseProgress.includes(progress._id)) {
+      user.courseProgress.push(progress._id);
+      await user.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Lecture marked as completed",
+      progress,
+    });
+
+  } catch (error) {
+    console.error("Error updating course progress:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
 };

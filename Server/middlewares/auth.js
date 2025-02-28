@@ -31,6 +31,7 @@ exports.auth = async (req, res, next)=>{
 //isStudent 
 exports.isStudent = async (req, res, next)=>{
     try{
+        console.log("here")
         if(req.user.accountType !== "Student"){
             return res.status(400).json({
                 success: false,

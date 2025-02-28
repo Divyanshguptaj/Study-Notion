@@ -4,7 +4,9 @@ import {Swiper, SwiperSlide} from "swiper/react"
 import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/pagination"
-import { Autoplay,FreeMode,Navigation, Pagination}  from 'swiper'
+import { FreeMode, Pagination } from "swiper/modules";
+
+// import { Autoplay ,Navigation}  from 'swiper'
 
 import Course_Card from './Course_Card'
 
@@ -31,7 +33,7 @@ const CourseSlider = ({Courses}) => {
           ))}
         </Swiper>
       ) : (
-        <p className="text-xl text-richblack-5">No Course Found</p>
+        <p className="text-xl text-richblack-300">No Course Found</p>
       )}
     </>
   )

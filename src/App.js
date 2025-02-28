@@ -18,11 +18,18 @@ import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
 import EditCourse from './components/core/Dashboard/EditCourse';
 import AddCourse from './components/core/Dashboard/AddCourse'
 import InstructorCourses from './components/core/Dashboard/MyCourses'
+import Instructor from './components/core/Dashboard/InstructorDashboard/Instructor'
 import About from './pages/About';
 import Catalog from './pages/Catalog';
+import ViewCourse from "./pages/ViewCourse";
+import VideoDetails from "./components/core/ViewCourse/VideoDetails";
+// import { ACCOUNT_TYPE } from "./utils/constants";
+import CourseDetails from './pages/CourseDetails';
+import { useSelector } from 'react-redux';
 // import { Outlet } from 'react-router-dom';
 
 function App() {
+  const { user } = useSelector((state) => state.profile)
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
@@ -38,6 +45,7 @@ function App() {
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="/about" element={<About />} />
         <Route path="/catalog/:catalogName" element={<Catalog />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
 
 
         <Route path="/dashboard" element={<DashBoard />}>
@@ -46,8 +54,19 @@ function App() {
           <Route path="add-courses" element={<AddCourse />} />
           <Route path="settings" element={<Settings />} />
           <Route path="instructor-courses" element={<InstructorCourses />} />
+          <Route path="instructor" element={<Instructor />} />
           <Route path="enrolled-courses" element={<EnrolledCourses />} />
           <Route path="/dashboard/edit-course/:courseId" element={<EditCourse />} />
+        </Route>
+
+        <Route path="view-course/:courseId" element={<ViewCourse />}>
+          {/* {
+            user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <> */}
+                <Route path="section/:sectionId/sub-section/:subSectionId" element={<VideoDetails />}/>
+              {/* </>
+            )
+          } */}
         </Route>
 
       </Routes>

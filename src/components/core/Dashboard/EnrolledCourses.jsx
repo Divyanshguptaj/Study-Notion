@@ -8,13 +8,14 @@ import { getUserEnrolledCourses } from "../../../services/operations/profileAPI"
 
 export default function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
   const navigate = useNavigate()
 
   const [enrolledCourses, setEnrolledCourses] = useState(null)
   const getEnrolledCourses = async () => {
     try {
-      const res = await getUserEnrolledCourses(token);
-
+      const res = await getUserEnrolledCourses(user._id, token);
+      console.log(res);
       setEnrolledCourses(res);
     } catch (error) {
       console.log("Could not fetch enrolled courses.")
@@ -37,9 +38,9 @@ export default function EnrolledCourses() {
           {/* TODO: Modify this Empty State */}
         </p>
       ) : (
-        <div className="my-8 text-richblack-5">
+        <div className="my-8 text-richblack-300">
           {/* Headings */}
-          <div className="flex rounded-t-lg bg-richblack-500 ">
+          <div className="flex rounded-t-lg bg-richblack-500">
             <p className="w-[45%] px-5 py-3">Course Name</p>
             <p className="w-1/4 px-2 py-3">Duration</p>
             <p className="flex-1 px-2 py-3">Progress</p>
@@ -47,7 +48,7 @@ export default function EnrolledCourses() {
           {/* Course Names */}
           {enrolledCourses.map((course, i, arr) => (
             <div
-              className={`flex items-center border border-richblack-700 ${
+              className={`flex items-center border border-richblack-700 rounded-md ${
                 i === arr.length - 1 ? "rounded-b-lg" : "rounded-none"
               }`}
               key={i}
@@ -56,7 +57,7 @@ export default function EnrolledCourses() {
                 className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
+                    `/view-course/${course?._id}/section/${course.courseContent?.[0]._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
                   )
                 }}
               >

@@ -25,7 +25,7 @@ export default function InstructorChart({ courses }) {
     labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: courses.map((course) => course.totalStudentsEnrolled),
+        data: courses.map((course) => course.studentsEnrolled.length),
         backgroundColor: generateRandomColors(courses.length),
       },
     ],
@@ -36,7 +36,7 @@ export default function InstructorChart({ courses }) {
     labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: courses.map((course) => course.totalAmountGenerated),
+        data: courses.map((course) => (course.price * course.studentsEnrolled.length)),
         backgroundColor: generateRandomColors(courses.length),
       },
     ],
@@ -49,15 +49,15 @@ export default function InstructorChart({ courses }) {
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 rounded-md bg-richblack-800 p-6">
-      <p className="text-lg font-bold text-richblack-5">Visualize</p>
+      <p className="text-lg font-bold text-richblack-300">Visualize</p>
       <div className="space-x-4 font-semibold">
         {/* Button to switch to the "students" chart */}
         <button
           onClick={() => setCurrChart("students")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
             currChart === "students"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
+              ? "border-b border-1 border-yellow-500 text-yellow-500"
+              : "text-white"
           }`}
         >
           Students
@@ -67,14 +67,14 @@ export default function InstructorChart({ courses }) {
           onClick={() => setCurrChart("income")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
             currChart === "income"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
+              ? "border-b border-1 border-yellow-500 text-yellow-500"
+              : "text-white"
           }`}
         >
           Income
         </button>
       </div>
-      <div className="relative mx-auto aspect-square h-full w-full">
+      <div className="relative mx-auto aspect-square h-[70%] w-[70%]">
         {/* Render the Pie chart based on the selected chart */}
         <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}

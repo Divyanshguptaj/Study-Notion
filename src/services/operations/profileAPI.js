@@ -34,24 +34,17 @@ export const fetchUserDetails = (email) => {
   };
 };
 
-export async function getUserEnrolledCourses(token) {
+export async function getUserEnrolledCourses(userId, token) {
   const toastId = toast.loading("Loading...")
   let result = []
   try {
-    console.log("BEFORE Calling BACKEND API FOR ENROLLED COURSES");
-    const response = await apiConnector(
-      "GET",
-      GET_USER_ENROLLED_COURSES_API,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+    // console.log(userId);
+    const response = await apiConnector( "GET", `${GET_USER_ENROLLED_COURSES_API}?userId=${userId}`,
+      // {
+      //   Authorization: `Bearer ${token}`,
+      // }
     )
-    console.log("AFTER Calling BACKEND API FOR ENROLLED COURSES");
-    // console.log(
-    //   "GET_USER_ENROLLED_COURSES_API API RESPONSE............",
-    //   response
-    // )
+    // console.log("GET_USER_ENROLLED_COURSES_API API RESPONSE............",response)
 
     if (!response.data.success) {
       throw new Error(response.data.message)
@@ -65,17 +58,19 @@ export async function getUserEnrolledCourses(token) {
   return result
 }
 
-export async function getInstructorData(token) {
+export async function getInstructorData(token, userId) {
   const toastId = toast.loading("Loading...");
   let result = [];
   try{
-    const response = await apiConnector("GET", GET_INSTRUCTOR_DATA_API, null, 
-    {
-      Authorization: `Bearer ${token}`,
-    })
+    // console.log("userId" ,userId)
+    const response = await apiConnector("GET", `${GET_INSTRUCTOR_DATA_API}?userId=${userId}`, null, 
+    // {
+    //   Authorization: `Bearer ${token}`,
+    // }
+  )
 
-    console.log("GET_INSTRUCTOR_API_RESPONSE", response);
-    result = response?.data?.courses
+    // console.log("GET_INSTRUCTOR_API_RESPONSE", response);
+    result = response?.data?.instructor
 
   }
   catch(error) {

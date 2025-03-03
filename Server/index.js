@@ -18,11 +18,11 @@ database.connect();
 app.use(express.json());
 app.use(cookieParser());
 //google about cors - 
-// app.use(cors({
-//     origin: ["http://localhost:3000"],
-//     credentials: true,
-// }));
-app.use(cors({ origin: "https://study-notion-frontend-sooty.vercel.app/" }));
+app.use(cors({
+    origin: ["http://localhost:3000","https://study-notion-seven-puce.vercel.app"],
+    credentials: true,
+}));
+// app.use(cors({ origin: "https://study-notion-frontend-sooty.vercel.app" }));
 
 app.use(fileUpload({useTempFiles:true,tempFileDir:"/tmp"}))
 cloudinaryConnect();

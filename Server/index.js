@@ -18,7 +18,13 @@ database.connect();
 app.use(express.json());
 app.use(cookieParser());
 //google about cors - 
-app.use(cors({origin: "https://study-notion-zeta-lac.vercel.app/",credentials:true,}));
+app.use(
+  cors({
+    origin: "https://study-notion-zeta-lac.vercel.app", // Change this to your frontend URL
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
+  })
+);
 app.use(fileUpload({useTempFiles:true,tempFileDir:"/tmp"}))
 cloudinaryConnect();
 

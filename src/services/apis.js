@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_BACKEND_URL || "https://study-notion-backend-g2t7.onrender.com"
+const BASE_URL = process.env.REACT_APP_BACKEND_URL || "https://study-notion-backend-dllmg0e5m-divyansh-gupta-s-projects.vercel.app/"
 
 // AUTH ENDPOINTS
 export const endpoints = {

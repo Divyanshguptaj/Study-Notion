@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
+=======
+const BASE_URL = process.env.REACT_APP_BACKEND_URL || "https://study-notion-backend-dllmg0e5m-divyansh-gupta-s-projects.vercel.app/"
+>>>>>>> a4b4b2217cad973652f5df73b754af80c9a3af0b
 
 // AUTH ENDPOINTS
 export const endpoints = {

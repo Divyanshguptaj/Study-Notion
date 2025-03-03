@@ -1,4 +1,4 @@
-const BASE_URL = "study-notion-backend-cyan.vercel.app"
+const BASE_URL = "https://study-notion-backend-cyan.vercel.app/"
 
 // AUTH ENDPOINTS
 export const endpoints = {

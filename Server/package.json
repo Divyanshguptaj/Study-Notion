@@ -8,7 +8,6 @@
     "build": "echo 'No build step required'",
     "vercel-build": "npm install"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",

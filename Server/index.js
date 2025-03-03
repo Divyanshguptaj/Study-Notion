@@ -22,7 +22,7 @@ app.use(cookieParser());
 //     origin: ["http://localhost:3000"],
 //     credentials: true,
 // }));
-app.use(cors({ origin: "https://study-notion-frontend-z0so.onrender.com/" }));
+app.use(cors({ origin: "https://study-notion-frontend-sooty.vercel.app/" }));
 
 app.use(fileUpload({useTempFiles:true,tempFileDir:"/tmp"}))
 cloudinaryConnect();

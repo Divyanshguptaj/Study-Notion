@@ -31,7 +31,7 @@ export default function Sidebar() {
         <div className="flex flex-col">
           {sidebarLinks.map((link) => {
             // if (link.type && user?.accountType !== link.type) return null
-            if (user?.accountType === "Student" && (link.id===3 || link.id===4)) return null
+            if (user?.accountType === "Student" && (link.id===3 || link.id===4 || link.id==2)) return null
             else if (user?.accountType === "Instructor" && (link.id===6 || link.id===5)) return null
             return (
               <SidebarLink key={link.id} link={link} iconName={link.icon} />

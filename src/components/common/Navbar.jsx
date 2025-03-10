@@ -116,20 +116,18 @@ function Navbar() {
         {/* Login / Signup / Dashboard */}
         <div className='flex gap-x-4 items-center'>
         {
-          // If user exists then user has some value it will show cart 
           user && user?.accountType === "Student" && (
-            <Link to="/dashboard/cart" className='relative text-white text-2xl'>
-              <AiOutlineShoppingCart/>
-              {
-                totalItems > 0 && (
-                  <span className='absoulte right-[0%] top-[0%] bg-red-700 text-white'>
-                    {totalItems}
-                  </span>
-                )
-              }
+            <Link to="/dashboard/cart" className="relative text-white text-2xl">
+              <AiOutlineShoppingCart className="relative" />
+              {totalItems > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-700 text-xs font-bold text-white">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           )
         }
+
 
         {token !== null && user?.image && (
           <Link to="/dashboard/my-profile" className="relative text-white text-2xl">

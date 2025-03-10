@@ -4,16 +4,16 @@ const crypto = require("crypto")
 const User = require("../models/User")
 const mailSender = require("../utils/mailSender")
 const mongoose = require("mongoose")
-const { courseEnrollmentEmail } = require("../mail/templates/courseEnrollmentEmail")
+// const { courseEnrollmentEmail } = require("../mail/templates/courseEnrollmentEmail")
 const { paymentSuccessEmail } = require("../mail/templates/paymentSuccessEmail")
-const CourseProgress = require("../models/CourseProgress")
+// const CourseProgress = require("../models/CourseProgress")
 
 // Capture the payment and initiate the Razorpay order
 exports.capturePayment = async (req, res) => {
   try {
     const { courses, userDetails } = req.body;
     const userId = userDetails._id;
-
+    // console.log(userId)
     if (!courses || courses.length === 0) {
       return res.status(400).json({ success: false, message: "Please Provide Course ID" });
     }
@@ -25,23 +25,31 @@ exports.capturePayment = async (req, res) => {
       try {
         // Ensure we're extracting the actual courseId
         const course_id = courseObj.courseId || courseObj;  // Adjust for possible structures
-
+        // console.log(course_id)
         if (!mongoose.Types.ObjectId.isValid(course_id)) {
           return res.status(400).json({ success: false, message: `Invalid Course ID: ${course_id}` });
         }
 
         // Find the course by its ID
         course = await Course.findById(course_id);
-
+        // console.log(course)
         if (!course) {
           return res.status(404).json({ success: false, message: "Could not find the Course" });
         }
 
         // Check if the user is already enrolled
         const uid = new mongoose.Types.ObjectId(userId);
+
         if (course.studentsEnrolled.includes(uid)) {
           return res.status(400).json({ success: false, message: "Student is already Enrolled" });
         }
+        
+        await User.findByIdAndUpdate(
+          userId,
+          { $push: { courses: course_id } },
+          { new: true }
+        );
+        
 
         total_amount += course.price;
       } catch (error) {

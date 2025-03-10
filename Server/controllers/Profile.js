@@ -39,8 +39,8 @@ exports.getUserDetails = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        const { email, dateOfBirth, about, contactNumber, gender } = req.body;
-        console.log(email, dateOfBirth, about, contactNumber, gender);
+        const { email, dateOfBirth, about, contactNumber, gender, firstName, lastName } = req.body;
+        console.log(email, dateOfBirth, about, contactNumber, gender, firstName, lastName); 
         if (!email) {
             return res.status(400).json({ success: false, message: "Email is required" });
         }
@@ -49,9 +49,14 @@ exports.updateProfile = async (req, res) => {
         const userDetails = await User.findOne({ email }).populate("additionalDetails");
         console.log(userDetails)
         if (!userDetails) {
-            return res.status(404).json({ success: false, message: "User not found" });
+          return res.status(404).json({ success: false, message: "User not found" });
         }
-
+        await User.findOneAndUpdate(
+          { email }, 
+          { $set: { firstName, lastName } },
+          { new: true} 
+        );
+        
         // Get profile ID from user's additional details
         const profileId = userDetails.additionalDetails;
         if (!profileId) {
@@ -64,13 +69,12 @@ exports.updateProfile = async (req, res) => {
         if (about) updateFields.about = about;
         if (contactNumber) updateFields.contactNumber = contactNumber;
         if (gender) updateFields.gender = gender;
-
         // Update the profile only if there are fields to update
         if (Object.keys(updateFields).length > 0) {
             await Profile.findByIdAndUpdate(profileId, updateFields, { new: true });
         }
 
-        return res.status(200).json({ success: true, message: "Profile updated successfully" });
+        return res.status(200).json({ success: true, message: "everything for profile updated successfully" });
     } catch (error) {
         console.error("Error updating profile:", error);
         return res.status(500).json({ success: false, message: "Server error" });

@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 //google about cors - 
 app.use(cors({
-    origin: ["http://localhost:3000","https://study-notion-n7p2208mp-divyansh-gupta-s-projects.vercel.app"],
+    origin: ["http://localhost:3000","https://study-notion-seven-puce.vercel.app/"],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
 }));
